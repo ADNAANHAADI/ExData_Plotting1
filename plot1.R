@@ -1,20 +1,22 @@
-# Load necessary library
 library(data.table)
+library(lubridate)
 
-# Read and filter data
-data <- fread("household_power_consumption.txt", na.strings = "?")
-data$Date <- as.Date(data$Date, format = "%d/%m/%Y")
-data <- subset(data, Date == "2007-02-01" | Date == "2007-02-02")
+# read in data
+dt <- fread("power.txt", na.strings = "?")
 
-# Create PNG file
-png("plot1.png", width=480, height=480)
+# filtering dates
+dt <- dt[dt$Date %in% c("1/2/2007", "2/2/2007") , ]
 
-# Plot histogram
-hist(as.numeric(data$Global_active_power), 
-     col="red", 
-     main="Global Active Power", 
-     xlab="Global Active Power (kilowatts)", 
-     ylab="Frequency")
+# png graphics device
+png("plot1.png", width = 480, height = 480)
 
-# Save and close plot
+# histogram
+hist(
+    dt$Global_active_power,
+    xlab = "Global Active Power (kilowatts)",
+    ylab = "frequency",
+    main = "Global Active Power",
+    col = "Red"
+)
+
 dev.off()
